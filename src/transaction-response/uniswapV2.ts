@@ -1,4 +1,4 @@
-import { Contract } from 'ethers';
+import { Contract, getAddress } from 'ethers';
 import v2RouterArtifact from '@uniswap/v2-periphery/build/IUniswapV2Router02.json';
 import type { TransactionResponse } from 'ethers';
 import type { Logger, TransactionDataSwap } from '../types';
@@ -18,7 +18,7 @@ function swapETHForExactTokens(
   return {
     wallet: transaction.from,
     tokenIn: WETH_ADDRESS,
-    tokenOut: args.path[args.path.length - 1],
+    tokenOut: getAddress(args.path[args.path.length - 1]),
     amountIn: transaction.value,
     amountOut: args.amountOut,
     mode: 'in',
@@ -38,7 +38,7 @@ function swapExactETHForTokens(
   return {
     wallet: transaction.from,
     tokenIn: WETH_ADDRESS,
-    tokenOut: args.path[args.path.length - 1],
+    tokenOut: getAddress(args.path[args.path.length - 1]),
     amountIn: transaction.value,
     amountOut: args.amountOutMin,
     mode: 'out',
@@ -58,7 +58,7 @@ function swapExactETHForTokensSupportingFeeOnTransferTokens(
   return {
     wallet: transaction.from,
     tokenIn: WETH_ADDRESS,
-    tokenOut: args.path[args.path.length - 1],
+    tokenOut: getAddress(args.path[args.path.length - 1]),
     amountIn: transaction.value,
     amountOut: args.amountOutMin,
     mode: 'out',
@@ -77,7 +77,7 @@ function swapExactTokensForETH(
   if (args.path.length === 0) return;
   return {
     wallet: transaction.from,
-    tokenIn: args.path[0],
+    tokenIn: getAddress(args.path[0]),
     tokenOut: WETH_ADDRESS,
     amountIn: args.amountIn,
     amountOut: args.amountOutMin,
@@ -97,7 +97,7 @@ function swapExactTokensForETHSupportingFeeOnTransferTokens(
   if (args.path.length === 0) return;
   return {
     wallet: transaction.from,
-    tokenIn: args.path[0],
+    tokenIn: getAddress(args.path[0]),
     tokenOut: WETH_ADDRESS,
     amountIn: args.amountIn,
     amountOut: args.amountOutMin,
@@ -117,8 +117,8 @@ function swapExactTokensForTokens(
   if (args.path.length === 0) return;
   return {
     wallet: transaction.from,
-    tokenIn: args.path[0],
-    tokenOut: args.path[args.path.length - 1],
+    tokenIn: getAddress(args.path[0]),
+    tokenOut: getAddress(args.path[args.path.length - 1]),
     amountIn: args.amountIn,
     amountOut: args.amountOutMin,
     mode: 'out',
@@ -137,8 +137,8 @@ function swapExactTokensForTokensSupportingFeeOnTransferTokens(
   if (args.path.length === 0) return;
   return {
     wallet: transaction.from,
-    tokenIn: args.path[0],
-    tokenOut: args.path[args.path.length - 1],
+    tokenIn: getAddress(args.path[0]),
+    tokenOut: getAddress(args.path[args.path.length - 1]),
     amountIn: args.amountIn,
     amountOut: args.amountOutMin,
     mode: 'out',
@@ -157,7 +157,7 @@ function swapTokensForExactETH(
   if (args.path.length === 0) return;
   return {
     wallet: transaction.from,
-    tokenIn: args.path[0],
+    tokenIn: getAddress(args.path[0]),
     tokenOut: WETH_ADDRESS,
     amountIn: args.amountInMax,
     amountOut: args.amountOut,
@@ -177,8 +177,8 @@ function swapTokensForExactTokens(
   if (args.path.length === 0) return;
   return {
     wallet: transaction.from,
-    tokenIn: args.path[0],
-    tokenOut: args.path[args.path.length - 1],
+    tokenIn: getAddress(args.path[0]),
+    tokenOut: getAddress(args.path[args.path.length - 1]),
     amountIn: args.amountInMax,
     amountOut: args.amountOut,
     mode: 'in',

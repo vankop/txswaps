@@ -1,4 +1,4 @@
-import { TransactionResponse, AbiCoder, Contract } from 'ethers';
+import { TransactionResponse, AbiCoder, Contract, getAddress } from 'ethers';
 import universalRouterAbi from '../abi/universal-router.json';
 import { Logger, TransactionDataSwap } from '../types';
 
@@ -95,8 +95,8 @@ export function parseTransaction(
       const path = extractPathFromV3(bytesPath);
       return {
         wallet: transaction.from,
-        tokenIn: path[0],
-        tokenOut: path[path.length - 1],
+        tokenIn: getAddress(path[0]),
+        tokenOut: getAddress(path[path.length - 1]),
         amountIn: amountIn,
         amountOut: amountOut,
         mode: 'out',
@@ -112,8 +112,8 @@ export function parseTransaction(
       const path = extractPathFromV3(bytesPath);
       return {
         wallet: transaction.from,
-        tokenIn: path[path.length - 1],
-        tokenOut: path[0],
+        tokenIn: getAddress(path[path.length - 1]),
+        tokenOut: getAddress(path[0]),
         amountIn: amountIn,
         amountOut: amountOut,
         mode: 'in',
@@ -128,8 +128,8 @@ export function parseTransaction(
       );
       return {
         wallet: transaction.from,
-        tokenIn: path[0],
-        tokenOut: path[path.length - 1],
+        tokenIn: getAddress(path[0]),
+        tokenOut: getAddress(path[path.length - 1]),
         amountIn: amountIn,
         amountOut: amountOut,
         mode: 'out',
@@ -144,8 +144,8 @@ export function parseTransaction(
       );
       return {
         wallet: transaction.from,
-        tokenIn: path[path.length - 1],
-        tokenOut: path[0],
+        tokenIn: getAddress(path[path.length - 1]),
+        tokenOut: getAddress(path[0]),
         amountIn: amountIn,
         amountOut: amountOut,
         mode: 'out',
