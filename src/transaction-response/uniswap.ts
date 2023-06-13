@@ -11,10 +11,10 @@ export function findSwapInTransactionResponse(
 ): TransactionDataSwap | undefined | null {
   if (!transaction.to) return;
   if (v2RoutersAddresses.has(transaction.to)) {
-    return parseTransactionForUniswapV2Router(transaction);
+    return parseTransactionForUniswapV2Router(transaction, logger);
   }
   if (universalRoutersAddresses.has(transaction.to)) {
-    return parseTransactionForUniversalUniswapRouter(transaction);
+    return parseTransactionForUniversalUniswapRouter(transaction, logger);
   }
   logger?.debug(
     `txhash=${transaction.hash}`,
