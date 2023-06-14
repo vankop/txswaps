@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "es2020",
     "target": "es2020",
     "moduleResolution": "node",
     "skipLibCheck": true,
@@ -9,6 +9,7 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "outDir": "dist",
+    "declaration": true,
     "lib": ["esnext"]
   },
   "include": [
