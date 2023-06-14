@@ -1,6 +1,6 @@
 import { parseTransaction } from '../src/transaction-response/universal-uniswap';
 import type { TransactionResponse } from 'ethers';
-import type { TransactionDataSwap } from '../src/types';
+import type { TransactionSwapData } from '../src/types';
 
 const txs: TransactionResponse[] = [
   {
@@ -33,7 +33,7 @@ const txs: TransactionResponse[] = [
   }
 ];
 
-const expected: Partial<TransactionDataSwap>[] = [
+const expected: Partial<TransactionSwapData>[] = [
   {
     wallet: '0xB8Bd911aA8fa479758275Bab75d4E0eb91Ed7408',
     tokenIn: '0x66861D5f0Fbfb7b2711712fEF2172c560D08d0AB',

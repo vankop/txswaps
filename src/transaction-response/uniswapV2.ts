@@ -1,7 +1,7 @@
 import { Contract, getAddress } from 'ethers';
 import v2RouterArtifact from '@uniswap/v2-periphery/build/IUniswapV2Router02.json';
 import type { TransactionResponse } from 'ethers';
-import type { Logger, TransactionDataSwap } from '../types';
+import type { Logger, TransactionSwapData } from '../types';
 
 const WETH_ADDRESS = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 const ROUTER_2 = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -9,7 +9,7 @@ const routerV2Contract = new Contract(ROUTER_2, v2RouterArtifact.abi);
 
 function swapETHForExactTokens(
   transaction: TransactionResponse
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const args = routerV2Contract.interface.decodeFunctionData(
     'swapETHForExactTokens',
     transaction.data
@@ -29,7 +29,7 @@ function swapETHForExactTokens(
 
 function swapExactETHForTokens(
   transaction: TransactionResponse
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const args = routerV2Contract.interface.decodeFunctionData(
     'swapExactETHForTokens',
     transaction.data
@@ -49,7 +49,7 @@ function swapExactETHForTokens(
 
 function swapExactETHForTokensSupportingFeeOnTransferTokens(
   transaction: TransactionResponse
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const args = routerV2Contract.interface.decodeFunctionData(
     'swapExactETHForTokensSupportingFeeOnTransferTokens',
     transaction.data
@@ -69,7 +69,7 @@ function swapExactETHForTokensSupportingFeeOnTransferTokens(
 
 function swapExactTokensForETH(
   transaction: TransactionResponse
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const args = routerV2Contract.interface.decodeFunctionData(
     'swapExactTokensForETH',
     transaction.data
@@ -89,7 +89,7 @@ function swapExactTokensForETH(
 
 function swapExactTokensForETHSupportingFeeOnTransferTokens(
   transaction: TransactionResponse
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const args = routerV2Contract.interface.decodeFunctionData(
     'swapExactTokensForETHSupportingFeeOnTransferTokens',
     transaction.data
@@ -109,7 +109,7 @@ function swapExactTokensForETHSupportingFeeOnTransferTokens(
 
 function swapExactTokensForTokens(
   transaction: TransactionResponse
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const args = routerV2Contract.interface.decodeFunctionData(
     'swapExactTokensForTokens',
     transaction.data
@@ -129,7 +129,7 @@ function swapExactTokensForTokens(
 
 function swapExactTokensForTokensSupportingFeeOnTransferTokens(
   transaction: TransactionResponse
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const args = routerV2Contract.interface.decodeFunctionData(
     'swapExactTokensForTokensSupportingFeeOnTransferTokens',
     transaction.data
@@ -149,7 +149,7 @@ function swapExactTokensForTokensSupportingFeeOnTransferTokens(
 
 function swapTokensForExactETH(
   transaction: TransactionResponse
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const args = routerV2Contract.interface.decodeFunctionData(
     'swapTokensForExactETH',
     transaction.data
@@ -169,7 +169,7 @@ function swapTokensForExactETH(
 
 function swapTokensForExactTokens(
   transaction: TransactionResponse
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const args = routerV2Contract.interface.decodeFunctionData(
     'swapTokensForExactTokens',
     transaction.data
@@ -190,7 +190,7 @@ function swapTokensForExactTokens(
 export function parseTransaction(
   transaction: TransactionResponse,
   logger?: Logger
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   const d = transaction.data.slice(2);
   try {
     if (d.startsWith('b6f9de95'))

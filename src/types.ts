@@ -6,7 +6,7 @@ export interface Logger {
   error(...args: any[]): void;
 }
 
-export interface TransactionDataSwap {
+export interface TransactionSwapData {
   wallet: string;
   tokenIn: string;
   tokenOut: string;
@@ -17,4 +17,12 @@ export interface TransactionDataSwap {
   mode: 'in' | 'out';
   protocol: 'uniswapv2' | 'uniswapv3';
   path: string[];
+}
+
+export interface TransactionSwap {
+  wallet: string;
+  tokenIn: string[];
+  tokenOut: string[];
+  amountIn: bigint[];
+  amountOut: bigint[];
 }

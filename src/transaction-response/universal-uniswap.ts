@@ -1,6 +1,6 @@
 import { TransactionResponse, AbiCoder, Contract, getAddress } from 'ethers';
 import universalRouterAbi from '../abi/universal-router.json';
-import { Logger, TransactionDataSwap } from '../types';
+import { Logger, TransactionSwapData } from '../types';
 
 const UNIVERSAL_ROUTER_ADDRESS = '0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B';
 const universalRouterContract = new Contract(
@@ -41,7 +41,7 @@ function extractPathFromV3(fullPath: string) {
 export function parseTransaction(
   transaction: TransactionResponse,
   logger?: Logger
-): TransactionDataSwap | undefined {
+): TransactionSwapData | undefined {
   let commands: string;
   let inputs: string[];
   if (transaction.data.startsWith('0x3593564c')) {
