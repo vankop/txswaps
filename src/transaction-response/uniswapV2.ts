@@ -191,6 +191,7 @@ export function parseTransaction(
   transaction: TransactionResponse,
   logger?: Logger
 ): TransactionSwapData | undefined {
+  if (!transaction.to) return;
   const d = transaction.data.slice(2);
   try {
     if (d.startsWith('b6f9de95'))

@@ -42,6 +42,7 @@ export function parseTransaction(
   transaction: TransactionResponse,
   logger?: Logger
 ): TransactionSwapData | undefined {
+  if (!transaction.to) return;
   let commands: string;
   let inputs: string[];
   if (transaction.data.startsWith('0x3593564c')) {

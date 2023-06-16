@@ -14,77 +14,70 @@ function getAmount(data: string): bigint {
 export function findSwapInTransactionReceipt(
   transaction: TransactionResponse,
   receipt: TransactionReceipt,
-  routersAddresses: Set<string>,
   logger?: Logger
 ): TransactionSwap | null {
   if (!transaction.to) return null;
-  if (routersAddresses.has(transaction.to)) {
-    const inOut = new Map<string, { in: bigint; out: bigint }>();
-    const routerAddress = zeroPadValue(transaction.to, 32);
-    const wallet = zeroPadValue(transaction.from, 32);
-    if (transaction.value > 0n)
-      inOut.set(WETH_ADDRESS, { in: transaction.value, out: 0n });
-    for (const log of receipt) {
-      if (log.topics[0] !== TRANSFER_TOPIC) continue;
-      debugger;
-      if (log.topics[1] === wallet) {
-        // from wallet
-        let entry = inOut.get(log.address);
-        if (!entry) {
-          entry = { in: 0n, out: 0n };
-          inOut.set(log.address, entry);
-        }
-        entry.in += getAmount(log.data);
-      } else if (log.topics[2] === wallet) {
-        // to address
-        let entry = inOut.get(log.address);
-        if (!entry) {
-          entry = { in: 0n, out: 0n };
-          inOut.set(log.address, entry);
-        }
-        entry.out += getAmount(log.data);
-      } else if (
-        log.topics[1] !== log.topics[2] &&
-        log.topics[2] === routerAddress &&
-        log.address === WETH_ADDRESS
-      ) {
-        // transfer WETH to router. it happens only after swap to unwrap and safeTransferETH to recipient
-        let entry = inOut.get(WETH_ADDRESS);
-        if (!entry) {
-          entry = { in: 0n, out: 0n };
-          inOut.set(log.address, entry);
-        }
-        entry.out += getAmount(log.data);
+  const inOut = new Map<string, { in: bigint; out: bigint }>();
+  const routerAddress = zeroPadValue(transaction.to, 32);
+  const wallet = zeroPadValue(transaction.from, 32);
+  if (transaction.value > 0n)
+    inOut.set(WETH_ADDRESS, { in: transaction.value, out: 0n });
+  for (const log of receipt) {
+    if (log.topics[0] !== TRANSFER_TOPIC) continue;
+    if (log.topics[1] === wallet) {
+      // from wallet
+      let entry = inOut.get(log.address);
+      if (!entry) {
+        entry = { in: 0n, out: 0n };
+        inOut.set(log.address, entry);
       }
-    }
-
-    logger?.trace(
-      `txhash=${transaction.hash}`,
-      `found ${inOut.size} tokens transfers`
-    );
-
-    if (inOut.size === 0) return null;
-
-    const swap: TransactionSwap = {
-      wallet: transaction.from,
-      tokenIn: [],
-      tokenOut: [],
-      amountIn: [],
-      amountOut: []
-    };
-
-    debugger;
-    for (const [key, value] of inOut) {
-      if (value.out > value.in) {
-        swap.tokenOut.push(key);
-        swap.amountOut.push(value.out - value.in);
-      } else {
-        swap.tokenIn.push(key);
-        swap.amountIn.push(value.in - value.out);
+      entry.in += getAmount(log.data);
+    } else if (log.topics[2] === wallet) {
+      // to address
+      let entry = inOut.get(log.address);
+      if (!entry) {
+        entry = { in: 0n, out: 0n };
+        inOut.set(log.address, entry);
       }
+      entry.out += getAmount(log.data);
+    } else if (
+      log.topics[1] !== log.topics[2] &&
+      log.topics[2] === routerAddress &&
+      log.address === WETH_ADDRESS
+    ) {
+      // transfer WETH to router. it happens only after swap to unwrap and safeTransferETH to recipient
+      let entry = inOut.get(WETH_ADDRESS);
+      if (!entry) {
+        entry = { in: 0n, out: 0n };
+        inOut.set(log.address, entry);
+      }
+      entry.out += getAmount(log.data);
     }
-    return swap;
   }
 
-  return null;
+  logger?.trace(
+    `txhash=${transaction.hash}`,
+    `found ${inOut.size} tokens transfers`
+  );
+
+  if (inOut.size === 0) return null;
+
+  const swap: TransactionSwap = {
+    wallet: transaction.from,
+    tokenIn: [],
+    tokenOut: [],
+    amountIn: [],
+    amountOut: []
+  };
+
+  for (const [key, value] of inOut) {
+    if (value.out > value.in) {
+      swap.tokenOut.push(key);
+      swap.amountOut.push(value.out - value.in);
+    } else {
+      swap.tokenIn.push(key);
+      swap.amountIn.push(value.in - value.out);
+    }
+  }
+  return swap;
 }
