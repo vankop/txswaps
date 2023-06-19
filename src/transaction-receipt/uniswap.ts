@@ -63,6 +63,7 @@ export function findSwapInTransactionReceipt(
   if (inOut.size === 0) return null;
 
   const swap: TransactionSwap = {
+    fee: receipt.fee,
     wallet: transaction.from,
     tokenIn: [],
     tokenOut: [],

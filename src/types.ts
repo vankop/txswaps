@@ -21,6 +21,7 @@ export interface TransactionSwapData {
 
 export interface TransactionSwap {
   wallet: string;
+  fee: bigint;
   tokenIn: string[];
   tokenOut: string[];
   amountIn: bigint[];
