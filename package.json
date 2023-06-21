@@ -1,6 +1,6 @@
 {
   "name": "@tradezon/txswaps",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Detect swaps in transactions",
   "main": "dist/index.js",
   "files": [

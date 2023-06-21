@@ -80,5 +80,8 @@ export function findSwapInTransactionReceipt(
       swap.amountIn.push(value.in - value.out);
     }
   }
+
+  if (swap.tokenIn.length === 0 || swap.tokenOut.length === 0) return null;
+
   return swap;
 }
